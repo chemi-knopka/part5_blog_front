@@ -9,11 +9,9 @@ const BlogForm = ({
   
   const handleSubmit = (e) => {
     e.preventDefault()
-
     createBlog({
       title,author,url
     })
-    
   }
   
   return (

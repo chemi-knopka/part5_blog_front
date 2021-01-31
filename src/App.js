@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState('')
   const [notify, setNotify] = useState(false)
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -26,10 +29,8 @@ const App = () => {
     }
   }, [])
 
-  // login user
+  // axios login user
   const handleLogin = (userObject) => {
-
-    // axios request 
       loginService
         .login(userObject)
         .then(user => {
@@ -49,15 +50,15 @@ const App = () => {
         })
   }
 
-  // hadle log out function
+  // removes user token from localStorage
   const handleLogout = () => {    
     window.localStorage.removeItem('blogAppUser')
     setUser(null)
   }
 
-  // handle adding blogs
+  // axios adding blogs
   const handleBlogAddition = (blogObject) => {
-    // axios post request
+    blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
       .then(postedBlog => {
@@ -89,9 +90,11 @@ const App = () => {
   // returns blog form for posting new blog 
   const blogForm = () => {
     return (
-     <BlogForm
-        createBlog={handleBlogAddition}
-     />
+      <Togglable buttonLabel='add Blog' ref={blogFormRef}>
+          <BlogForm
+              createBlog={handleBlogAddition}
+          />
+      </Togglable>
     )
   }
 
@@ -114,23 +117,18 @@ const App = () => {
       </div>
     )
   }
-  const loginOrBlogContent = () => {
-    // if user is not authorized, return login form 
-    if (user === null) {
-      return <div>{loginForm()}</div>
-    }
-    // return blog content
-    return (
-      <div>{blogContent()}</div>
-    )
-  }
 
+  // main 
   return (
     <>
       {
         notify && <div className='notification'>{notification}</div>
       }
-      {loginOrBlogContent()}
+      {
+        user == null
+          ? loginForm()
+          : blogContent()
+      }
     </>
   )
 }
