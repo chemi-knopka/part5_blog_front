@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleBlogUpdate }) => {
   const [visible, setVisible] = useState(false)
   const [btnLabel, setBtnLabel] = useState('view')
 
@@ -25,6 +25,15 @@ const Blog = ({ blog }) => {
     setVisible(!visible)
   }
 
+  const handleLike = (e) => {
+    const updateObj = {
+      ...blog,
+       likes: blog.likes + 1,
+    }
+
+    handleBlogUpdate(blog.id, updateObj)
+  }
+
   return (    
     <div style={style}>
       <div>
@@ -33,7 +42,7 @@ const Blog = ({ blog }) => {
       <div style={showWhenVisible}>
         <div>{blog.author}</div>
         <div>{blog.url}</div>
-        <div>{blog.likes} <button>like</button></div>
+        <div>{blog.likes} <button onClick={handleLike}>like</button></div>
       </div>
     </div>
   )

@@ -29,34 +29,30 @@ const App = () => {
     }
   }, [])
 
-  // axios login user
+  /* --axios services */
+
+  // user login
   const handleLogin = (userObject) => {
-      loginService
-        .login(userObject)
-        .then(user => {
-          // save user and its token to localStorage
-          window.localStorage.setItem('blogAppUser', JSON.stringify(user))
-          // this will set auth. headers to post request
-          blogService.setToken(user.token)
-          setUser(user)   
-        })
-        .catch(() => {
-          // notify if login failed
-            setNotification('wrong password or username')  
-            setNotify(true)
-            setTimeout(() => {
-              setNotify(false)
-            }, 4000)
-        })
+    loginService
+      .login(userObject)
+      .then(user => {
+        // save user and its token to localStorage
+        window.localStorage.setItem('blogAppUser', JSON.stringify(user))
+        // this will set auth. headers to post request
+        blogService.setToken(user.token)
+        setUser(user)   
+      })
+      .catch(() => {
+        // notify if login failed
+          setNotification('wrong password or username')  
+          setNotify(true)
+          setTimeout(() => {
+            setNotify(false)
+          }, 4000)
+      })
   }
 
-  // removes user token from localStorage
-  const handleLogout = () => {    
-    window.localStorage.removeItem('blogAppUser')
-    setUser(null)
-  }
-
-  // axios adding blogs
+  // blog addition
   const handleBlogAddition = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService
@@ -75,9 +71,30 @@ const App = () => {
       .catch(() => {
         console.log('failed to add a blog')
       })
-
   }
 
+  // blog update
+  const handleBlogUpdate = (id, blogObject) => {
+    blogService
+      .update(id, blogObject)
+      .then(updatedBlog => {
+        setBlogs(blogs.map(blog => (
+          blog.id ===  id
+            ? updatedBlog
+            : blog
+        )))
+      })
+      .catch((error) => console.log(error.message))
+  }
+
+  /** handlers and forms*/
+
+  // removes user token from localStorage
+  const handleLogout = () => {    
+    window.localStorage.removeItem('blogAppUser')
+    setUser(null)
+  }
+  
   // returns login form component
   const loginForm = () => {
     return (
@@ -92,7 +109,7 @@ const App = () => {
     return (
       <Togglable buttonLabel='create new Blog' ref={blogFormRef}>
           <BlogForm
-              createBlog={handleBlogAddition}
+              createBlog={handleBlogAddition}              
           />
       </Togglable>
     )
@@ -110,11 +127,15 @@ const App = () => {
 
         <h2>Blogs</h2>
         {blogForm()}
-        
+
         {/* blog list */}
         {
           blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} />
+              <Blog 
+                key={blog.id} 
+                blog={blog}
+                handleBlogUpdate={handleBlogUpdate}
+               />
           )
         }        
       </div>
