@@ -27,7 +27,9 @@ const Blog = ({ blog, handleBlogUpdate }) => {
 
   const handleLike = (e) => {
     const updateObj = {
-      ...blog,
+       author: blog.author,
+       title: blog.title,
+       url: blog.url,
        likes: blog.likes + 1,
     }
 
