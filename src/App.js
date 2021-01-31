@@ -90,7 +90,7 @@ const App = () => {
   // returns blog form for posting new blog 
   const blogForm = () => {
     return (
-      <Togglable buttonLabel='add Blog' ref={blogFormRef}>
+      <Togglable buttonLabel='create new Blog' ref={blogFormRef}>
           <BlogForm
               createBlog={handleBlogAddition}
           />
@@ -101,19 +101,22 @@ const App = () => {
   // returns blog Content after user login
   const blogContent = () => {
     return (
-      <div>   
+      <div>
         {/* logout content */}
         <div>
           {user.username} is logged-in
           <button onClick={handleLogout}>Log out</button>          
         </div>
+
         <h2>Blogs</h2>
-        {/* blog posting form*/}
         {blogForm()}
+        
         {/* blog list */}
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}        
+        {
+          blogs.map(blog =>
+              <Blog key={blog.id} blog={blog} />
+          )
+        }        
       </div>
     )
   }
