@@ -1,7 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
 
-const Blog = ({ blog, handleBlogUpdate }) => {
+const Blog = ({
+  blog, 
+  handleBlogUpdate,
+  handleBlogRemove
+}) => {
   const [visible, setVisible] = useState(false)
   const [btnLabel, setBtnLabel] = useState('view')
 
@@ -36,6 +40,13 @@ const Blog = ({ blog, handleBlogUpdate }) => {
     handleBlogUpdate(blog.id, updateObj)
   }
 
+  // confirmation windows to confirm delete blog
+  const removeConfirmation = () => {
+    if (window.confirm(`do you realy want to delete '${blog.title}'`)) {
+      handleBlogRemove(blog.id)
+    } 
+  }
+
   return (    
     <div style={style}>
       <div>
@@ -43,8 +54,9 @@ const Blog = ({ blog, handleBlogUpdate }) => {
       </div>
       <div style={showWhenVisible}>
         <div>{blog.author}</div>
-        <div>{blog.url}</div>
         <div>{blog.likes} <button onClick={handleLike}>like</button></div>
+        <div>{blog.url}</div>
+        <button onClick={removeConfirmation}>remove</button>
       </div>
     </div>
   )

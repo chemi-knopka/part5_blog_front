@@ -28,8 +28,9 @@ const App = () => {
   useEffect(() => {
     const blogAppUser = window.localStorage.getItem('blogAppUser')
     if (blogAppUser) {
-      const user = JSON.stringify(blogAppUser)
+      const user = JSON.parse(blogAppUser)
       setUser(user) 
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -97,6 +98,15 @@ const App = () => {
       .catch((error) => console.log(error.message))
   }
 
+  const handleBlogRemove = (id) => {
+    blogService
+      .deleteOne(id)
+      .then(() => {
+        setBlogs(blogs.filter(blog => blog.id !== id))
+      })
+      .catch((error) => console.log(error))
+  }
+
   /** handlers and forms*/
 
   // removes user token from localStorage
@@ -145,6 +155,7 @@ const App = () => {
                 key={blog.id} 
                 blog={blog}
                 handleBlogUpdate={handleBlogUpdate}
+                handleBlogRemove={handleBlogRemove}
                />
           )
         }        
