@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 
 const Blog = ({
-  blog, 
+  blog,
   handleBlogUpdate,
   handleBlogRemove
 }) => {
@@ -10,7 +10,7 @@ const Blog = ({
   const [btnLabel, setBtnLabel] = useState('view')
 
   const showWhenVisible = { display: visible ? '' : 'none' }
-  
+
   const style = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -19,22 +19,22 @@ const Blog = ({
     marginBottom: 5
   }
 
-  
-  const toggleVisibility = (e) => {
+
+  const toggleVisibility = () => {
     // change btn label
     visible ?
-      setBtnLabel('view') : 
+      setBtnLabel('view') :
       setBtnLabel('hide')
 
     setVisible(!visible)
   }
 
-  const handleLike = (e) => {
+  const handleLike = () => {
     const updateObj = {
-       author: blog.author,
-       title: blog.title,
-       url: blog.url,
-       likes: blog.likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+      likes: blog.likes + 1,
     }
 
     handleBlogUpdate(blog.id, updateObj)
@@ -44,15 +44,16 @@ const Blog = ({
   const removeConfirmation = () => {
     if (window.confirm(`do you realy want to delete '${blog.title}'`)) {
       handleBlogRemove(blog.id)
-    } 
+    }
   }
 
-  return (    
-    <div style={style}>
+  return (
+    <div style={style} className='blog'>
       <div>
-        {blog.title} <button onClick={toggleVisibility}>{btnLabel}</button>
+        {blog.title}
+        <button onClick={toggleVisibility}>{btnLabel}</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="blogContent">
         <div>{blog.author}</div>
         <div>{blog.likes} <button onClick={handleLike}>like</button></div>
         <div>{blog.url}</div>

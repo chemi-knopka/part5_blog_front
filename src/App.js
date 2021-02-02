@@ -17,11 +17,11 @@ const App = () => {
   useEffect(() => {
     blogService
       .getAll()
-      .then(blogs =>{
+      .then(blogs => {
         const sortedBlogs = blogs.sort((a, b) => (a.likes > b.likes) ? 1 : -1 )
         setBlogs(sortedBlogs)
       }
-    )  
+      )
   }, [])
 
   // on the first load get username from localStorage
@@ -29,7 +29,7 @@ const App = () => {
     const blogAppUser = window.localStorage.getItem('blogAppUser')
     if (blogAppUser) {
       const user = JSON.parse(blogAppUser)
-      setUser(user) 
+      setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
@@ -51,15 +51,15 @@ const App = () => {
         window.localStorage.setItem('blogAppUser', JSON.stringify(user))
         // this will set auth. headers to post request
         blogService.setToken(user.token)
-        setUser(user)   
+        setUser(user)
       })
       .catch(() => {
         // notify if login failed
-          setNotification('wrong password or username')  
-          setNotify(true)
-          setTimeout(() => {
-            setNotify(false)
-          }, 4000)
+        setNotification('wrong password or username')
+        setNotify(true)
+        setTimeout(() => {
+          setNotify(false)
+        }, 4000)
       })
   }
 
@@ -110,27 +110,27 @@ const App = () => {
   /** handlers and forms*/
 
   // removes user token from localStorage
-  const handleLogout = () => {    
+  const handleLogout = () => {
     window.localStorage.removeItem('blogAppUser')
     setUser(null)
   }
-  
+
   // returns login form component
   const loginForm = () => {
     return (
-      <LoginForm 
+      <LoginForm
         handleLogin={handleLogin}
       />
     )
   }
 
-  // returns blog form for posting new blog 
+  // returns blog form for posting new blog
   const blogForm = () => {
     return (
       <Togglable buttonLabel='create new Blog' ref={blogFormRef}>
-          <BlogForm
-              createBlog={handleBlogAddition}              
-          />
+        <BlogForm
+          createBlog={handleBlogAddition}
+        />
       </Togglable>
     )
   }
@@ -142,7 +142,7 @@ const App = () => {
         {/* logout content */}
         <div>
           {user.username} is logged-in
-          <button onClick={handleLogout}>Log out</button>          
+          <button onClick={handleLogout}>Log out</button>
         </div>
 
         <h2>Blogs</h2>
@@ -151,26 +151,26 @@ const App = () => {
         {/* blog list */}
         {
           blogs.map(blog =>
-              <Blog 
-                key={blog.id} 
-                blog={blog}
-                handleBlogUpdate={handleBlogUpdate}
-                handleBlogRemove={handleBlogRemove}
-               />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleBlogUpdate={handleBlogUpdate}
+              handleBlogRemove={handleBlogRemove}
+            />
           )
-        }        
+        }
       </div>
     )
   }
 
-  // main 
+  // main
   return (
     <>
       {
         notify && <div className='notification'>{notification}</div>
       }
       {
-        user == null
+        user === null
           ? loginForm()
           : blogContent()
       }
