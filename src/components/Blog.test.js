@@ -25,4 +25,4 @@ test('renders content and author and likes are hidden', () => {
     const divBlogContent = component.container.querySelector('.blogContent')
     console.log(prettyDOM(divBlogContent))
     expect(divBlogContent).toHaveStyle( 'display: none')
-})
+ })

@@ -51,7 +51,7 @@ const Blog = ({
     <div style={style} className='blog'>
       <div>
         {blog.title}
-        <button onClick={toggleVisibility}>{btnLabel}</button>
+        <button onClick={toggleVisibility} data-cy='view-hide'>{btnLabel}</button>
       </div>
       <div style={showWhenVisible} className="blogContent">
         <div>{blog.author}</div>
