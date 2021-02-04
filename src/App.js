@@ -18,7 +18,7 @@ const App = () => {
     blogService
       .getAll()
       .then(blogs => {
-        const sortedBlogs = blogs.sort((a, b) => (a.likes > b.likes) ? 1 : -1 )
+        const sortedBlogs = blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1 )
         setBlogs(sortedBlogs)
       }
       )
@@ -36,7 +36,7 @@ const App = () => {
 
   // sort blogs when blogs are changed (when liked)
   useEffect(() => {
-    const sortedBlogs = blogs.sort((a, b) => (a.likes > b.likes) ? 1 : -1 )
+    const sortedBlogs = blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1 )
     setBlogs(sortedBlogs)
   }, [blogs])
 
