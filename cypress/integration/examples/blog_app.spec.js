@@ -55,6 +55,12 @@ describe('BLog app', function() {
                 cy.get('[data-cy=likes]').contains('like').click()
                 cy.get('[data-cy=likes]').contains('1')
             })
+
+            it.only('user can delete the blog', function() {
+                cy.get('[data-cy=view-hide]').click()
+                cy.contains('remove').click()
+                cy.get('html').should('not.contain', 'blog always')
+            })
         })
     })
 })
