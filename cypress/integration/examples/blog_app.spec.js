@@ -35,21 +35,8 @@ describe('BLog app', function() {
 
         describe.only('when logged in ', function() {
             beforeEach(function() {
-                cy.request('POST', 'http://localhost:3001/api/login', {
-                    username: 'shotius', password: '123'
-                }).then(response => {
-                    localStorage.setItem('blogAppUser', JSON.stringify(response.body))
-                    cy.visit('http://localhost:3000')
-                })
-
-                // cy.request({
-                //     url: 'http://localhost:3001/api/blogs',
-                //     method: 'POST',
-                //     body: { title: 'one', author: 'test', url: 'test'},
-                //     headers: {
-                //         'Authorization': `bearer ${JSON.parse(localStorage.getItem('blogAppUser'))}`
-                //     }
-                // })
+                cy.login({ username: 'shotius', password: '123'})
+                cy.createBlog({ title: 'blog always', author: 'author cypress', url: 'url cypress'})
             })
 
             it('a blog can be created', function() {
@@ -64,6 +51,9 @@ describe('BLog app', function() {
 
             it('user can like a blog', function() {
                 cy.get('[data-cy=view-hide]').click()
+                cy.get('[data-cy=likes]').contains('0')
+                cy.get('[data-cy=likes]').contains('like').click()
+                cy.get('[data-cy=likes]').contains('1')
             })
         })
     })

@@ -55,7 +55,7 @@ const Blog = ({
       </div>
       <div style={showWhenVisible} className="blogContent">
         <div>{blog.author}</div>
-        <div>{blog.likes} <button onClick={handleLike}>like</button></div>
+        <div data-cy='likes'>{blog.likes} <button onClick={handleLike}>like</button></div>
         <div>{blog.url}</div>
         <button onClick={removeConfirmation}>remove</button>
       </div>
